@@ -65,6 +65,17 @@ const router = new Router({
       component: () => import('./../views/FirewallRules.vue'),
     },
     {
+      path: '/settings',
+      name: 'settings',
+      component: () => import('./../views/Settings.vue'),
+      children: [
+        {
+          path: '',
+          component: () => import('./../components/setting/SettingProfile.vue'),
+        },
+      ],
+    },
+    {
       path: '*',
       name: 'NotFound',
       component: Dashboard,

@@ -9,6 +9,7 @@ export default {
     token: localStorage.getItem('token') || '',
     user: localStorage.getItem('user') || '',
     tenant: localStorage.getItem('tenant') || '',
+    email: localStorage.getItem('email') || '',
   },
 
   getters: {
@@ -16,6 +17,7 @@ export default {
     authStatus: (state) => state.status,
     currentUser: (state) => state.user,
     tenant: (state) => state.tenant,
+    email: (state) => state.email,
   },
 
   mutations: {
@@ -28,6 +30,7 @@ export default {
       Vue.set(state, 'token', data.token);
       Vue.set(state, 'user', data.user);
       Vue.set(state, 'tenant', data.tenant);
+      Vue.set(state, 'email', data.email);
     },
 
     authError(state) {
@@ -39,6 +42,7 @@ export default {
       Vue.set(state, 'token', '');
       Vue.set(state, 'user', '');
       Vue.set(state, 'tenant', '');
+      Vue.set(state, 'email', '');
     },
   },
 
@@ -52,6 +56,7 @@ export default {
         localStorage.setItem('token', resp.data.token);
         localStorage.setItem('user', resp.data.user);
         localStorage.setItem('tenant', resp.data.tenant);
+        localStorage.setItem('email', resp.data.email);
 
         context.commit('authSuccess', resp.data);
       } catch (err) {
@@ -65,6 +70,7 @@ export default {
       localStorage.removeItem('user');
       localStorage.removeItem('tenant');
       localStorage.removeItem('onceWelcome');
+      localStorage.removeItem('email');
     },
   },
 };
