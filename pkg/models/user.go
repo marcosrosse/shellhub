@@ -8,6 +8,7 @@ type User struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 	TenantID string `json:"tenant_id" bson:"tenant_id"`
+	Email    string `json:"email"`
 }
 
 type UserAuthRequest struct {
@@ -19,6 +20,7 @@ type UserAuthResponse struct {
 	Token  string `json:"token"`
 	User   string `json:"user"`
 	Tenant string `json:"tenant"`
+	Email  string `json:"email"`
 }
 
 type UserAuthClaims struct {
