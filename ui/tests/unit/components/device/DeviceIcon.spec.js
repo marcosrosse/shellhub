@@ -1,6 +1,6 @@
 import Vuex from 'vuex';
 import { shallowMount, createLocalVue } from '@vue/test-utils';
-import DeviceIcon from '@/components/device/DeviceIcon.vue';
+import DeviceIcon from '@/components/device/DeviceIcon';
 
 describe('DeviceIcon', () => {
   const localVue = createLocalVue();
@@ -33,20 +33,19 @@ describe('DeviceIcon', () => {
     raspbian: 'fl-raspberry-pi',
     'ubuntu-core': 'fl-ubuntu',
     void: 'fl-void',
-    default: 'fl-tux'
+    default: 'fl-tux',
   };
 
   beforeEach(() => {
-
     wrapper = shallowMount(DeviceIcon, {
       localVue,
       stubs: ['fragment'],
-      propsData: { iconName }
+      propsData: { iconName },
     });
   });
 
   it('Is a Vue instance', () => {
-    expect(wrapper.isVueInstance()).toBeTruthy();
+    expect(wrapper).toBeTruthy();
   });
   it('Renders the component', () => {
     expect(wrapper.html()).toMatchSnapshot();
