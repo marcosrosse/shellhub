@@ -97,6 +97,7 @@ func (s *service) AuthDevice(ctx context.Context, req *models.DeviceAuthRequest)
 		Token:     tokenStr,
 		Name:      dev.Name,
 		Namespace: user.Username,
+		Status:    dev.Status,
 	}, nil
 }
 
