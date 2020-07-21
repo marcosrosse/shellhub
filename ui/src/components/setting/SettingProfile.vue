@@ -50,50 +50,129 @@
           <v-divider />
           <v-divider />
 
-          <div
-            class="mt-6 pl-4 pr-4"
+          <ValidationObserver
+            ref="obs"
+            v-slot="{ invalid, validated, passes }"
           >
-            <v-text-field
-              v-model="username"
-              label="Username"
-              type="text"
-              :disabled="!editDataStatus"
-            />
+            <div
+              class="mt-6 pl-4 pr-4"
+            >
+              <ValidationProvider
+                v-slot="{ errors }"
+                name="Priority"
+                rules="required"
+              >
+                <v-text-field
+                  v-model="username"
+                  label="Username"
+                  type="text"
+                  :error-messages="errors"
+                  required
+                  :disabled="!editDataStatus"
+                />
+              </ValidationProvider>
 
-            <v-text-field
-              v-model="email"
-              label="E-mail"
-              type="text"
-              :disabled="!editDataStatus"
-            />
+              <ValidationProvider
+                v-slot="{ errors }"
+                name="Priority"
+                rules="required|email"
+              >
+                <v-text-field
+                  v-model="email"
+                  label="E-mail"
+                  type="text"
+                  :error-messages="errors"
+                  required
+                  :disabled="!editDataStatus"
+                />
+              </ValidationProvider>
 
-            <SettingProfileEditButton
-              action="data"
-              @statusEdit="enableEdit('editData')"
-              @update="updateData('editData')"
-            />
-          </div>
+              <v-btn
+                v-if="!editDataStatus"
+                class="mr-2"
+                outlined
+                @click="editDataStatus = !editDataStatus"
+              >
+                Change Data
+              </v-btn>
 
-          <v-divider class="mt-6" />
-          <v-divider class="mb-6" />
+              <div
+                v-if="editDataStatus"
+              >
+                <v-btn
+                  class="mr-2"
+                  outlined
+                  @click="editDataStatus = !editDataStatus"
+                >
+                  Cancel
+                </v-btn>
 
-          <div
-            class="mt-6 pl-4 pr-4"
+                <v-btn
+                  class="mr-2"
+                  outlined
+                  @click="passes(updateData('data'))"
+                >
+                  Save
+                </v-btn>
+              </div>
+            </div>
+          </ValidationObserver>
+
+          <ValidationObserver
+            ref="obs"
+            v-slot="{ invalid, validated, passes }"
           >
-            <v-text-field
-              v-model="password"
-              :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
-              :type="show ? 'text' : 'password'"
-              label="Password"
-              :disabled="!editPasswordStatus"
-            />
+            <v-divider class="mt-6" />
+            <v-divider class="mb-6" />
 
-            <SettingProfileEditButton
-              action="password"
-              @statusEdit="enableEdit('editPassword')"
-              @update="updateData('editPassword')"
-            />
-          </div>
+            <div
+              class="mt-6 pl-4 pr-4"
+            >
+              <ValidationProvider
+                v-slot="{ errors }"
+                name="Priority"
+                rules="required|password"
+              >
+                <v-text-field
+                  v-model="password"
+                  label="password"
+                  type="text"
+                  :error-messages="errors"
+                  required
+                  :disabled="!editPasswordStatus"
+                />
+              </ValidationProvider>
+
+              <v-btn
+                v-if="!editPasswordStatus"
+                class="mr-2"
+                outlined
+                @click="editPasswordStatus = !editPasswordStatus"
+              >
+                Change Data
+              </v-btn>
+
+              <div
+                v-if="editPasswordStatus"
+              >
+                <v-btn
+                  class="mr-2"
+                  outlined
+                  @click="editPasswordStatus = !editPasswordStatus"
+                >
+                  Cancel
+                </v-btn>
+
+                <v-btn
+                  class="mr-2"
+                  outlined
+                  @click="passes(updateData('password'))"
+                >
+                  Save
+                </v-btn>
+              </div>
+            </div>
+          </ValidationObserver>
         </v-col>
       </v-row>
     </v-container>
@@ -102,13 +181,17 @@
 
 <script>
 
-import SettingProfileEditButton from '@/components/setting/SettingProfileEditButton';
+import {
+  ValidationObserver,
+  ValidationProvider,
+} from 'vee-validate';
 
 export default {
   name: 'SettingProfile',
 
   components: {
-    SettingProfileEditButton,
+    ValidationProvider,
+    ValidationObserver,
   },
 
   data() {
@@ -138,17 +221,12 @@ export default {
       this.email = this.$store.getters['auth/email'];
     },
 
-    postUser() {
-      this.$store.dispatch('users/setUser', 'teste');
-    },
-
     enableEdit(field) {
-      if (field === 'editData') {
+      if (field === 'data') {
         this.editDataStatus = !this.editDataStatus;
-      } else if (field === 'editPassword') {
+      } else if (field === 'password') {
         this.editPasswordStatus = !this.editPasswordStatus;
       }
-      this.setData();
     },
 
     updateData(field) {
