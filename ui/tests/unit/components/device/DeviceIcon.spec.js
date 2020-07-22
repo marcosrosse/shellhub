@@ -7,7 +7,7 @@ describe('DeviceIcon', () => {
   localVue.use(Vuex);
 
   let wrapper;
-  let iconName = 'alpine';
+  const iconName = 'alpine';
 
   const iconsMap = {
     alpine: 'fl-alpine',
@@ -50,14 +50,7 @@ describe('DeviceIcon', () => {
   it('Renders the component', () => {
     expect(wrapper.html()).toMatchSnapshot();
   });
-  for (iconName in iconsMap) {
-    it(`Has the ${iconName} icon`, () => {
-      wrapper = shallowMount(DeviceIcon, {
-        localVue,
-        stubs: ['fragment'],
-        propsData: { iconName }
-      });
-      expect(wrapper.find('[data-cy="type-icon"]').text()).toBe(iconsMap[iconName]);
-    });
-  }
+  it(`Has the alpine icon`, () => {
+    expect(wrapper.find('[data-cy="type-icon"]').text()).toBe(iconsMap.alpine);
+  });
 });

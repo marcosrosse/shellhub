@@ -20,6 +20,7 @@ module.exports = {
   ],
   plugins: ['import'],
   rules: {
+    'global-require': 0,
     semi: ['error', 'always'],
     quotes: ['error', 'single', { avoidEscape: true, allowTemplateLiterals: true }],
     indent: [2, 2],
